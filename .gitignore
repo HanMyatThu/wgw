@@ -1,0 +1,4 @@
+# For Backend Repo
+
+server/node_modules
+server/.env
