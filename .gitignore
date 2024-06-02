@@ -2,3 +2,32 @@
 
 server/node_modules
 server/.env
+
+
+# For React Native Repo
+mobile/node_modules/
+mobile/.gitignore
+# Expo
+mobile/.expo/
+mobile/dist/
+mobile/web-build/
+
+# Native
+mobile/*.orig.*
+mobile/*.jks
+mobile/*.p8
+mobile/*.p12
+mobile/*.key
+mobile/*.mobileprovision
+
+# Metro
+mobile/.metro-health-check*
+# macOS
+mobile/.DS_Store
+mobile/*.pem
+
+# local env files
+mobile/.env*.local
+
+# typescript
+mobile/*.tsbuildinfo
