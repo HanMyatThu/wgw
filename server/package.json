@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "tailwind:css": "postcss src/styles/tailwind.css -o src/styles/style.css",
     "build": "npx tsc",
     "start": "node dist/index.js",
     "dev": "nodemon"
@@ -15,8 +16,10 @@
   "dependencies": {
     "@types/socket.io": "^3.0.2",
     "amqplib": "^0.10.4",
+    "autoprefixer": "^10.4.19",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "jade": "^1.11.0",
     "socket.io": "^4.7.5"
   },
   "devDependencies": {

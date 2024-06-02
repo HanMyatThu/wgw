@@ -1,0 +1,33 @@
+doctype html
+html
+  head
+    title Socket.IO Chat
+     link(rel='stylesheet', href='/styles/style.css')
+  body
+    ul#messages
+    form#form(action='')
+      input#input(autocomplete='off')
+      button Send
+    script(src='/socket.io/socket.io.js')
+    script.
+
+      var socket = io();
+      var form = document.getElementById('form');
+      var input = document.getElementById('input');
+
+      form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      if (input.value) {
+        socket.emit('chat', input.value);
+        input.value = '';
+        }
+      });
+
+      socket.on('chatsuccess', function(msg) {
+        console.log(msg,'msg')
+        var item = document.createElement('li');
+        item.textContent = msg;
+        document.getElementById('messages').appendChild(item);
+        window.scrollTo(0, document.body.scrollHeight);
+      });
