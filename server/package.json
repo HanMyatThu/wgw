@@ -4,7 +4,6 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "tailwind:css": "postcss src/styles/tailwind.css -o src/styles/style.css",
     "docker:start": "docker-compose up -d",
     "build": "npx tsc",
     "start": "node dist/index.js",

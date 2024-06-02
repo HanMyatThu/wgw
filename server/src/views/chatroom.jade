@@ -4,30 +4,43 @@ html
     title Socket.IO Chat
     link(rel='stylesheet', href='/styles/style.css')
   body
-    ul#messages
-    form#form(action='')
-      input#input(autocomplete='off')
-      button Send
-    script(src='/socket.io/socket.io.js')
-    script.
+    .container
+      .msg-header
+        .container1
+          .active
+            p Chat Room
+      .chat-page
+        .msg-inbox
+          .chats
+            .msg-page#messages
+             
+          // msg-bottom section
+          .msg-bottom
+            .input-group
+              input#input.form-control(type='text', placeholder='Write message...')
+              button#sendButton.input-group-text.send-icon
+                i.bi.bi-send send
+            
+  script(src='/socket.io/socket.io.js')
+  script.
 
-      var socket = io();
-      var form = document.getElementById('form');
-      var input = document.getElementById('input');
+    var socket = io();
+    var button = document.getElementById('sendButton');
+    var input = document.getElementById('input');
 
-      form.addEventListener('submit', function(e) {
-      e.preventDefault();
+    button.addEventListener('click', function(e) {
+    e.preventDefault();
 
-      if (input.value) {
-        socket.emit('chat', input.value);
-        input.value = '';
-        }
-      });
+    if (input.value) {
+      socket.emit('chat', input.value);
+      input.value = '';
+      }
+    });
 
-      socket.on('chatsuccess', function(msg) {
-        console.log(msg,'msg')
-        var item = document.createElement('li');
-        item.textContent = msg;
-        document.getElementById('messages').appendChild(item);
-        window.scrollTo(0, document.body.scrollHeight);
-      });
+    socket.on('chatsuccess', function(msg) {
+      var elem = document.createElement('p');
+      elem.textContent = msg;
+      document.getElementById('messages').appendChild(elem);
+      window.scrollTo(0, document.body.scrollHeight);
+    });
+    

@@ -66,9 +66,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("chat", async (msg: string) => {
-    console.log('message: ' + msg)
     if (rabbitMqChannel) {
-      console.log('here sent to queue')
       rabbitMqChannel.sendToQueue(QUEUE, Buffer.from(msg));
     }
   });
@@ -78,19 +76,13 @@ io.on("connection", (socket) => {
   });
 });
 
-io.on("ping", () => {
-  // ...
-});
-
 async function consumeMessages() {
   try {
     const connection: Connection = await amqp.connect(RABBITMQ_URL);
     const channel: Channel = await connection.createChannel();
     await channel.assertQueue(QUEUE, { durable: false });
     channel.consume(QUEUE, (msg) => {
-      console.log('consume', msg)
       if (msg !== null) {
-        console.log('Received:', msg.content.toString());
         io.emit('chatsuccess', msg.content.toString())
         channel.ack(msg);
       }
