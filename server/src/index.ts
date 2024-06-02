@@ -4,6 +4,8 @@ import path from 'path'
 import 'dotenv/config'
 
 import { Server } from 'socket.io'
+import amqp, { Channel, Connection } from 'amqplib';
+
 import { SocketIoInterface } from './interfaces'
 
 import { router as ViewRoutes } from './routes/view'
@@ -38,6 +40,24 @@ app.get('/', (req: Request, res: Response) => {
   })
 })
 
+// rabbitMQ set up
+const RABBITMQ_URL = process.env.RABBITMQ_URL || 'amqp://localhost:5672/';
+const QUEUE = 'test';
+
+let rabbitMqChannel: Channel;
+
+async function connectRabbitMQ() {
+  try {
+    const connection: Connection = await amqp.connect(RABBITMQ_URL);
+    const channel: Channel = await connection.createChannel();
+    await channel.assertQueue(QUEUE, { durable: false });
+    console.log('rabbit mq is connected')
+    rabbitMqChannel = channel;
+  } catch (error) {
+    console.error('Failed to connect to RabbitMQ', error);
+  }
+}
+
 // socket io server
 io.on("connection", (socket) => {
   socket.emit("noArg");
@@ -45,11 +65,12 @@ io.on("connection", (socket) => {
   socket.emit("withAck", "4", (e) => {
   });
 
-
   socket.on("chat", async (msg: string) => {
     console.log('message: ' + msg)
-
-    io.emit('chatsuccess', msg)
+    if (rabbitMqChannel) {
+      console.log('here sent to queue')
+      rabbitMqChannel.sendToQueue(QUEUE, Buffer.from(msg));
+    }
   });
 
   socket.on('disconnect', () => {
@@ -60,6 +81,27 @@ io.on("connection", (socket) => {
 io.on("ping", () => {
   // ...
 });
+
+async function consumeMessages() {
+  try {
+    const connection: Connection = await amqp.connect(RABBITMQ_URL);
+    const channel: Channel = await connection.createChannel();
+    await channel.assertQueue(QUEUE, { durable: false });
+    channel.consume(QUEUE, (msg) => {
+      console.log('consume', msg)
+      if (msg !== null) {
+        console.log('Received:', msg.content.toString());
+        io.emit('chatsuccess', msg.content.toString())
+        channel.ack(msg);
+      }
+    });
+  } catch (error) {
+    console.error('Failed to consume messages from RabbitMQ', error);
+  }
+}
+
+connectRabbitMQ().catch(console.error);
+consumeMessages().catch(console.error);
 
 server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

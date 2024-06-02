@@ -5,6 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "tailwind:css": "postcss src/styles/tailwind.css -o src/styles/style.css",
+    "docker:start": "docker-compose up -d",
     "build": "npx tsc",
     "start": "node dist/index.js",
     "dev": "nodemon"
@@ -23,6 +24,7 @@
     "socket.io": "^4.7.5"
   },
   "devDependencies": {
+    "@types/amqplib": "^0.10.5",
     "@types/express": "^4.17.21",
     "nodemon": "^3.1.2",
     "ts-node": "^10.9.2",
