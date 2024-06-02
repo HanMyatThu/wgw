@@ -3,7 +3,7 @@ import http from 'http'
 import 'dotenv/config'
 
 import { Server } from 'socket.io'
-import { SocketIoInterface } from 'interfaces'
+import { SocketIoInterface } from './interfaces'
 
 const PORT = process.env.PORT || 3000
 
@@ -24,6 +24,27 @@ app.get('/', (req: Request, res: Response) => {
     message: "Socket IO Message App"
   })
 })
+
+// socket io server
+io.on("connection", (socket) => {
+  socket.emit("noArg");
+  socket.emit("basicEmit", 1, "2", Buffer.from([3]));
+  socket.emit("withAck", "4", (e) => {
+  });
+
+  socket.on("chat", async (msg: string) => {
+    console.log('message: ' + msg);
+
+  });
+
+  socket.on('disconnect', () => {
+    console.log('user disconnected', socket.id);
+  });
+});
+
+io.on("ping", () => {
+  // ...
+});
 
 server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
