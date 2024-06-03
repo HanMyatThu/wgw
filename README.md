@@ -34,11 +34,18 @@ The Git repository contains two projects.
 
 - for terraform, create terraform.tfvars
 
-```bash
-  key_name = "ec2"
+```bash 
+  key_name = "ec2" (must be your keypair in aws ec2)
   ami_id = "ami-04b70fa74e45c3917"
   access_key = "xxxxx"
   secret_key = "xxxxx"
+```
+
+- if you want to run terraform, please do
+
+ ```bash
+ terraform init
+ terraform apply
 ```
     
 - start the server (run the docker file for localhost)
