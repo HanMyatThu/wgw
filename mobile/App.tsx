@@ -6,21 +6,26 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import { HomeScreen } from 'screens/Home';
 import { CardScreen } from 'screens/Card';
+import { AddButton } from 'components/Button/AddButton';
 
 const Stack = createStackNavigator();
 
 function MyStack() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerTitleAlign: 'center',
+      }}
+    >
       <Stack.Screen
         name="Home"
         component={HomeScreen}
-        options={{ title: 'Home', headerTitleAlign: 'center' }}
+        options={{ title: 'Home' }}
       />
       <Stack.Screen
         name="Cards"
         component={CardScreen}
-        options={{ title: 'Details', headerTitleAlign: 'center' }}
+        options={{ title: 'Cards', headerRight: () => <AddButton icon='icon-plus' /> }}
       />
     </Stack.Navigator>
   );
