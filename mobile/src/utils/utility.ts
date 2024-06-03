@@ -16,3 +16,9 @@ export const FormatCardExpiry = (text: string) => {
   }
   return formatted;
 }
+
+export const  maskVisaCardNumber = (cardNumber: string) => {
+  cardNumber = cardNumber.toString().trim();
+  const maskedCardNumber = cardNumber.slice(0, -4).replace(/./g, "•").replace(/(.{4})/g, "$1 ") + " " + cardNumber.slice(-4);
+  return maskedCardNumber;
+}
