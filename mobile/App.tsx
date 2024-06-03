@@ -7,10 +7,16 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { HomeScreen } from 'screens/Home';
 import { CardScreen } from 'screens/Card';
 import { AddButton } from 'components/Button/AddButton';
+import { AddCardScreen } from 'screens/Card/AddCard';
 
 const Stack = createStackNavigator();
 
 function MyStack() {
+
+  const onClick = () => {
+
+  }
+
   return (
     <Stack.Navigator
       screenOptions={{
@@ -26,6 +32,11 @@ function MyStack() {
         name="Cards"
         component={CardScreen}
         options={{ title: 'Cards', headerRight: () => <AddButton icon='icon-plus' /> }}
+      />
+      <Stack.Screen
+        name="AddCard"
+        component={AddCardScreen}
+        options={{ title: 'Add A New Card' }}
       />
     </Stack.Navigator>
   );
