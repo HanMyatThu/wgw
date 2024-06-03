@@ -2,6 +2,7 @@
 
 server/node_modules
 server/.env
+server/terraform.tfvars
 
 
 # For React Native Repo
