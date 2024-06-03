@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, Pressable } from 'react-native';
-import { useCardHooks } from 'hooks/useCardHooks';
+import { View, Text, Pressable, ScrollView } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons'
 import { VisaCard } from 'components/Card/VisaCard';
 import { cardInterface } from 'interfaces';
+import { withProvider } from 'utils/withProvider';
+import CardRequestProvider, { useCardRequest } from "context";
 
 import { StackNavigationProp } from '@react-navigation/stack';
 
@@ -18,14 +19,15 @@ type Props = {
   navigation: HomeScreenNavigationProp
 };
 
-export const CardScreen = ({
+const CardScreen = ({
   navigation
 }: Props) => {
 
-  const { cards } = useCardHooks()
+  const [state, _] = useCardRequest();
+  const { cards } = state;
 
   return (
-    <View>
+    <ScrollView>
       {
         !cards.length ?
           (
@@ -45,21 +47,33 @@ export const CardScreen = ({
             </View>
           ) :
           (
-            <View className='flex mx-4 my-8 items-center justify-center gap-3'>
+            <View className='flex flex-col h-full w-full px-4 mt-4 items-center justify-center'>
               {
                 cards.map((card: cardInterface, idx: number) => (
                   <VisaCard
                     key={idx}
                     cardNumber={card.cardNumber}
                     expiryDate={card.expiryDate}
+                    ccv={card.ccv}
                     name={card.name}
                     userId={card.userId}
                   />
                 ))
               }
+              <Pressable
+                onPress={() => navigation.navigate('AddCard')}
+              >
+                <Text
+                  className='my-2 text-[#4AD8DA] text-xl font-semibold'
+                >
+                  Add New Card
+                </Text>
+              </Pressable>
             </View>
           )
       }
-    </View>
+    </ScrollView>
   );
 }
+
+export default withProvider(CardRequestProvider)(CardScreen);

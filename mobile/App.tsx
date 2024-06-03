@@ -1,13 +1,10 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { HomeScreen } from 'screens/Home';
-import { CardScreen } from 'screens/Card';
 import { AddButton } from 'components/Button/AddButton';
-import { AddCardScreen } from 'screens/Card/AddCard';
+import CardScreen from 'screens/Card';
+import AddCardScreen from 'screens/Card/AddCard';
 
 const Stack = createStackNavigator();
 
@@ -31,7 +28,7 @@ function MyStack() {
       <Stack.Screen
         name="Cards"
         component={CardScreen}
-        options={{ title: 'Cards', headerRight: () => <AddButton icon='icon-plus' /> }}
+        options={{ title: 'Cards', headerRight: () => <AddButton onClick={onClick} icon='icon-plus' /> }}
       />
       <Stack.Screen
         name="AddCard"

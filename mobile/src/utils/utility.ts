@@ -3,15 +3,16 @@ export const MaskNumber = (text: string | number) => {
 }
 
 export const FormatCardExpiry = (text: string) => {
+  let formatted: string = ''
   if (!text.length) {
     return ''
   }
   if (text.length > 4) {
-    text = text.slice(0, 4); // Limit to 4 digits
+    formatted = text.slice(0, 4); // Limit to 4 digits
   }
 
   if (text.length > 3) {
-    text = `${text.slice(0, 2)}/${text.slice(2)}`; // Add slash between MM and YY
+    formatted = `${text.slice(0, 2)}/${text.slice(2)}`; // Add slash between MM and YY
   }
-  return text;
+  return formatted;
 }

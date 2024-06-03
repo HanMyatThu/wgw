@@ -1,13 +1,44 @@
 import * as React from 'react';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { withProvider } from 'utils/withProvider';
+import CardRequestProvider, { useCardRequest } from "context";
+
 import { View, SafeAreaView, Text, Pressable } from 'react-native';
 import { InputField } from 'components/Input/Input';
-import { FormatCardExpiry } from 'utils/utility';
 
-export const AddCardScreen = () => {
+type RootStackParamList = {
+  Cards: undefined;
+};
+
+type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Cards'>;
+
+type Props = {
+  navigation: HomeScreenNavigationProp
+};
+
+const AddCardScreen = ({
+  navigation
+}: Props) => {
+  const [state, dispatch] = useCardRequest();
+  const { cards } = state;
+
   const [number, setNumber] = React.useState('')
   const [name, setName] = React.useState('')
   const [expiry, setExpiry] = React.useState('')
   const [ccv, setCCV] = React.useState('')
+
+  const handleAddNewCard = () => {
+
+    const newCards = cards.push({
+      cardNumber: number,
+      name,
+      expiryDate: expiry,
+      ccv,
+      userId: '1'
+    })
+    dispatch({ type: "updateCards", payload: newCards });
+    navigation.navigate('Cards')
+  }
 
   return (
     <SafeAreaView className='h-full bg-white'>
@@ -45,7 +76,7 @@ export const AddCardScreen = () => {
               keyboardType: "number-pad",
               placeholder: "MM/YY",
               maxLength: 5,
-              value: FormatCardExpiry(expiry),
+              value: expiry,
               className: 'border bg-white h-11 min-w-[80px] p-3 tracking-widest font-semibold text-md'
             }}
           />
@@ -59,6 +90,7 @@ export const AddCardScreen = () => {
             inputProps={{
               keyboardType: "number-pad",
               placeholder: "",
+              maxLength: 5,
               className: 'border bg-white h-11 min-w-[80px] p-3 tracking-widest font-semibold text-md'
             }}
           />
@@ -71,6 +103,8 @@ export const AddCardScreen = () => {
       </View>
       <View className='absolute bottom-0 w-full'>
         <Pressable
+          // disabled={!expiry.length || !name.length || !number.length || !ccv.length}
+          onPress={handleAddNewCard}
           className='mx-4 bg-[#4AD8DA] border-[#4AD8DA] hover:border-cyan-600 hover:bg-cyan-600 p-4 rounded-3xl mb-4 text-center items-center'
         >
           <Text className='text-white font-bold text-lg'>
@@ -81,3 +115,5 @@ export const AddCardScreen = () => {
     </SafeAreaView>
   )
 }
+
+export default withProvider(CardRequestProvider)(AddCardScreen);
