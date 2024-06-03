@@ -3,13 +3,15 @@ import reducer from "./reducer";
 import { cardInterface } from "interfaces";
 
 interface IInitialState {
-  cards: cardInterface[]
+  cards: cardInterface[],
+  index: number
 }
 
 type ActionType = { type: 'updateCards', payload: any };
 
 const initialState: IInitialState = {
   cards: [],
+  index: 0
 };
 
 export const Context = createContext<[IInitialState, Dispatch<ActionType>]>([initialState, () => { }]);

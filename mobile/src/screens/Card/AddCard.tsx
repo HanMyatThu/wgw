@@ -3,11 +3,12 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { withProvider } from 'utils/withProvider';
 import CardRequestProvider, { useCardRequest } from "context";
 
-import { View, SafeAreaView, Text, Pressable } from 'react-native';
+import { View, SafeAreaView, Text, Pressable, Alert } from 'react-native';
 import { InputField } from 'components/Input/Input';
 
 type RootStackParamList = {
-  Cards: undefined;
+  Cards: undefined
+  Home: undefined,
 };
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Cards'>;
@@ -27,6 +28,12 @@ const AddCardScreen = ({
   const [expiry, setExpiry] = React.useState('')
   const [ccv, setCCV] = React.useState('')
 
+  const showAlert = () =>
+    Alert.alert(
+      'New Card is added',
+      'You will be redirected to Home Screen',
+    );
+
   const handleAddNewCard = () => {
 
     const newCards = cards.push({
@@ -37,7 +44,10 @@ const AddCardScreen = ({
       userId: '1'
     })
     dispatch({ type: "updateCards", payload: newCards });
-    navigation.navigate('Cards')
+    showAlert()
+    setTimeout(() => {
+      navigation.navigate('Home')
+    }, 3000)
   }
 
   return (
@@ -90,7 +100,7 @@ const AddCardScreen = ({
             inputProps={{
               keyboardType: "number-pad",
               placeholder: "",
-              maxLength: 5,
+              maxLength: 3,
               className: 'border bg-white h-11 min-w-[80px] p-3 tracking-widest font-semibold text-md'
             }}
           />

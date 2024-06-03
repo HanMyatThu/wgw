@@ -27,7 +27,7 @@ const CardScreen = ({
   const { cards } = state;
 
   return (
-    <ScrollView className='flex flex-1 mb-4'>
+    <ScrollView key={cards.length} className='flex flex-1 mb-4'>
       {
         !cards.length ?
           (
